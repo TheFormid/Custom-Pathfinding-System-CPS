@@ -1,9 +1,5 @@
-### 🧠 Custom Pathfinding System (CPS) - Final GitHub README
-
-*(Bu metni kopyala ve README.md dosyana yapıştır. En tepeye de o Thumbnail'i koyacağız!)*
-
 ```markdown
-![Project Header](OriginalThumb.jpg)
+![Project Header](OriginalThumbnail.jpg)
 
 # 🧠 Custom Pathfinding System (CPS) - R&D Archives
 > **Role:** Algorithm Engineer & Solo Developer  
