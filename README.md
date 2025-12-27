@@ -16,6 +16,13 @@ What followed was a deep dive into Computer Science fundamentals, evolving throu
 ---
 
 ## 🧬 Phase 1: The "Greedy" Mistake (v1.0 - v2.0)
+
+<div align="center">
+  <img src="Assets/TankPath.jpg" width="80%" alt="Tank Path Failure" />
+  <p><em>The Origin: Tank AI attempting to navigate complex geometry.</em></p>
+</div>
+<br>
+
 * **Goal:** Make the unit move directly to the target.
 * **Algorithm:** Greedy Best-First Search.
 * **The Fail:** The unit would get stuck behind U-shaped walls. It constantly tried to minimize distance to the target, meaning it refused to move *away* (backwards) to navigate around obstacles.
