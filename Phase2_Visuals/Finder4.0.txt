@@ -1,0 +1,250 @@
+wait(4)
+
+local Road = {}
+
+local Start = game.Workspace.Targets.Part1
+local Finish = game.Workspace.Targets.Part2
+local Points = game.Workspace.Points
+
+local NearPart_1 = nil
+local NearPart_2 = nil
+
+local FirstTime = false
+local DidWeFindTarget = false
+local WhiteList = {}
+
+for i , v in pairs(Points:GetChildren()) do --WhiteList ayarlanıyor...
+	table.insert(WhiteList,i,v)
+end
+for i , v in pairs(Points:GetChildren()) do --En Yakın Başlangıç Partı bulundu
+	if NearPart_1 == nil then
+		NearPart_1 = v
+	else
+		local CurrentDistance = (NearPart_1.Position-Start.Position).magnitude
+		local NewDistance = (v.Position-Start.Position).magnitude
+		if NewDistance < CurrentDistance then
+			NearPart_1 = v
+		end
+	end
+end
+for i , v in pairs(Points:GetChildren()) do --En Yakın Bitiş Partı bulundu
+	if NearPart_2 == nil then
+		NearPart_2 = v
+	else
+		local CurrentDistance = (NearPart_2.Position-Finish.Position).magnitude
+		local NewDistance = (v.Position-Finish.Position).magnitude
+		if NewDistance < CurrentDistance then
+			NearPart_2 = v
+		end
+	end
+end
+
+NearPart_1.BrickColor = BrickColor.new("Electric blue")
+NearPart_2.BrickColor = BrickColor.new("Neon orange")
+
+function MakeTheRoad(RoadPart)
+	
+	if RoadPart:GetAttribute("Segment") == 1 or RoadPart:GetAttribute("Segment") == 0 then
+		
+		for i , v in pairs(Road) do
+			v.BrickColor = BrickColor.new("Electric blue")
+			v.Material = "Neon"
+		end
+		
+	else
+		print("allooo")
+		local Distance1 = (RoadPart.Position - RoadPart.Position + Vector3.new(11.5,0,11.5)).magnitude
+		local CFrame1 = CFrame.new(RoadPart.Position,RoadPart.Position + Vector3.new(11.5,0,11.5))
+		local RayDirection1 = CFrame1.LookVector 
+		local Ray1 = Ray.new(RoadPart.Position, RayDirection1 * Distance1)
+		local FoundedPart1 = workspace:FindPartOnRayWithWhitelist(Ray1,WhiteList) 
+		local FoundedPart1Check = workspace:FindPartOnRay(Ray1)
+		
+		local Distance2 = (RoadPart.Position - RoadPart.Position + Vector3.new(11.5,0,-11.5)).magnitude
+		local CFrame2 = CFrame.new(RoadPart.Position,RoadPart.Position + Vector3.new(11.5,0,-11.5))
+		local RayDirection2 = CFrame2.LookVector 
+		local Ray2 = Ray.new(RoadPart.Position, RayDirection2 * Distance2)
+		local FoundedPart2 = workspace:FindPartOnRayWithWhitelist(Ray2,WhiteList)
+		local FoundedPart2Check = workspace:FindPartOnRay(Ray2)
+
+		local Distance3 = (RoadPart.Position - RoadPart.Position + Vector3.new(-11.5,0,11.5)).magnitude
+		local CFrame3 = CFrame.new(RoadPart.Position,RoadPart.Position + Vector3.new(-11.5,0,11.5))
+		local RayDirection3 = CFrame3.LookVector 
+		local Ray3 = Ray.new(RoadPart.Position, RayDirection3 * Distance3)
+		local FoundedPart3 = workspace:FindPartOnRayWithWhitelist(Ray3,WhiteList) 
+		local FoundedPart3Check = workspace:FindPartOnRay(Ray3)
+
+		local Distance4 = (RoadPart.Position - RoadPart.Position + Vector3.new(-11.5,0,-11.5)).magnitude
+		local CFrame4 = CFrame.new(RoadPart.Position,RoadPart.Position + Vector3.new(-11.5,0,-11.5))
+		local RayDirection4 = CFrame4.LookVector 
+		local Ray4 = Ray.new(RoadPart.Position, RayDirection4 * Distance4)
+		local FoundedPart4 = workspace:FindPartOnRayWithWhitelist(Ray4,WhiteList) 
+		local FoundedPart4Check = workspace:FindPartOnRay(Ray4)
+
+		local Distance5 = (RoadPart.Position - RoadPart.Position + Vector3.new(8,0,0)).magnitude
+		local CFrame5 = CFrame.new(RoadPart.Position,RoadPart.Position + Vector3.new(8,0,0))
+		local RayDirection5 = CFrame5.LookVector 
+		local Ray5 = Ray.new(RoadPart.Position, RayDirection5 * Distance5)
+		local FoundedPart5 = workspace:FindPartOnRayWithWhitelist(Ray5,WhiteList) 
+		local FoundedPart5Check = workspace:FindPartOnRay(Ray5)
+		
+		local Distance6 = (RoadPart.Position - RoadPart.Position + Vector3.new(0,0,8)).magnitude
+		local CFrame6 = CFrame.new(RoadPart.Position,RoadPart.Position + Vector3.new(0,0,8))
+		local RayDirection6 = CFrame6.LookVector 
+		local Ray6 = Ray.new(RoadPart.Position, RayDirection6 * Distance6)
+		local FoundedPart6 = workspace:FindPartOnRayWithWhitelist(Ray6,WhiteList) 
+		local FoundedPart6Check = workspace:FindPartOnRay(Ray6)
+		
+		local Distance7 = (RoadPart.Position - RoadPart.Position + Vector3.new(-8,0,0)).magnitude
+		local CFrame7 = CFrame.new(RoadPart.Position,RoadPart.Position + Vector3.new(-8,0,0))
+		local RayDirection7 = CFrame7.LookVector 
+		local Ray7 = Ray.new(RoadPart.Position, RayDirection7 * Distance7)
+		local FoundedPart7 = workspace:FindPartOnRayWithWhitelist(Ray7,WhiteList) 
+		local FoundedPart7Check = workspace:FindPartOnRay(Ray7)
+		
+		local Distance8 = (RoadPart.Position - RoadPart.Position + Vector3.new(0,0,-8)).magnitude
+		local CFrame8 = CFrame.new(RoadPart.Position,RoadPart.Position + Vector3.new(0,0,-8))
+		local RayDirection8 = CFrame8.LookVector 
+		local Ray8 = Ray.new(RoadPart.Position, RayDirection8 * Distance8)
+		local FoundedPart8 = workspace:FindPartOnRayWithWhitelist(Ray8,WhiteList) 
+		local FoundedPart8Check = workspace:FindPartOnRay(Ray8) 
+		
+	--	wait(0.001)
+		
+		if FoundedPart1 and FoundedPart1 ~= RoadPart and FoundedPart1:GetAttribute("Segment") == RoadPart:GetAttribute("Segment") -2 and FoundedPart1Check == FoundedPart1 then
+				table.insert(Road,1,FoundedPart1)
+				MakeTheRoad(FoundedPart1)		
+		elseif FoundedPart2 and FoundedPart2 ~= RoadPart and FoundedPart2:GetAttribute("Segment") == RoadPart:GetAttribute("Segment") -2 and FoundedPart2Check == FoundedPart2 then	
+				table.insert(Road,1,FoundedPart2)		
+				MakeTheRoad(FoundedPart2)
+		elseif FoundedPart3 and FoundedPart3 ~= RoadPart and FoundedPart3:GetAttribute("Segment") == RoadPart:GetAttribute("Segment") -2 and FoundedPart3Check == FoundedPart3 then	
+				table.insert(Road,1,FoundedPart3)			
+				MakeTheRoad(FoundedPart3)		
+		elseif FoundedPart4 and FoundedPart4 ~= RoadPart and FoundedPart4:GetAttribute("Segment") == RoadPart:GetAttribute("Segment") -2 and FoundedPart4Check == FoundedPart4 then
+				table.insert(Road,1,FoundedPart4)	
+				MakeTheRoad(FoundedPart4)	
+		elseif FoundedPart5 and FoundedPart5 ~= RoadPart and FoundedPart5:GetAttribute("Segment") == RoadPart:GetAttribute("Segment") -1 and FoundedPart5Check == FoundedPart5 then	
+				table.insert(Road,1,FoundedPart5)	
+				MakeTheRoad(FoundedPart5)	
+		elseif FoundedPart6 and FoundedPart6 ~= RoadPart and FoundedPart6:GetAttribute("Segment") == RoadPart:GetAttribute("Segment") -1 and FoundedPart6Check == FoundedPart6 then
+				table.insert(Road,1,FoundedPart6)	
+				MakeTheRoad(FoundedPart6)	
+		elseif FoundedPart7 and FoundedPart7 ~= RoadPart and FoundedPart7:GetAttribute("Segment") == RoadPart:GetAttribute("Segment") -1 and FoundedPart7Check == FoundedPart7 then
+				table.insert(Road,1,FoundedPart7)
+				MakeTheRoad(FoundedPart7)
+		elseif FoundedPart8 and FoundedPart8 ~= RoadPart and FoundedPart8:GetAttribute("Segment") == RoadPart:GetAttribute("Segment") -1 and FoundedPart8Check == FoundedPart8 then
+				table.insert(Road,1,FoundedPart8)
+				MakeTheRoad(FoundedPart8)
+		end	
+		
+	end
+	
+end
+
+function CreateSegment(Segment,Blocks,R,G,B)
+	
+	wait(0.001)
+	
+	local NextTable = {}
+	
+	for i , v in pairs(Blocks) do --Hedefe Vardıkmı
+		local Distance = (v.Position-NearPart_2.Position).magnitude
+		if Distance < 8.1 and DidWeFindTarget == false then
+			DidWeFindTarget = true
+			table.insert(Road,1,v)
+			MakeTheRoad(v)
+		end
+	end
+	
+	if DidWeFindTarget == true then
+		print("Target Found")
+	else
+		for i , v in pairs(Blocks) do --Yeni Blocklar
+
+			local Distance1 = (v.Position - v.Position + Vector3.new(8,0,0)).magnitude
+			local CFrame1 = CFrame.new(v.Position,v.Position + Vector3.new(8,0,0))
+			local RayDirection1 = CFrame1.LookVector 
+			local Ray1 = Ray.new(v.Position, RayDirection1 * Distance1)
+			local FoundedPart1 = workspace:FindPartOnRayWithWhitelist(Ray1,WhiteList) 
+			if FoundedPart1 and FoundedPart1 ~= v and not FoundedPart1:GetAttribute("Segment") then
+				local FoundedPart1Check = workspace:FindPartOnRay(Ray1) 
+				if FoundedPart1Check == FoundedPart1 then
+					FoundedPart1:SetAttribute("Segment",Segment)
+					FoundedPart1.Color = Color3.fromRGB(R,G,B)
+					FoundedPart1.Material = "Neon"
+					table.insert(NextTable,1,FoundedPart1)
+				end	
+			end
+
+			local Distance2 = (v.Position - v.Position + Vector3.new(0,0,8)).magnitude
+			local CFrame2 = CFrame.new(v.Position,v.Position + Vector3.new(0,0,8))
+			local RayDirection2 = CFrame2.LookVector 
+			local Ray2 = Ray.new(v.Position, RayDirection2 * Distance2)
+			local FoundedPart2 = workspace:FindPartOnRayWithWhitelist(Ray2,WhiteList) 
+			if FoundedPart2 and FoundedPart2 ~= v and not FoundedPart2:GetAttribute("Segment") then
+				local FoundedPart2Check = workspace:FindPartOnRay(Ray2) 
+				if FoundedPart2Check == FoundedPart2 then
+					FoundedPart2:SetAttribute("Segment",Segment)
+					FoundedPart2.Color = Color3.fromRGB(R,G,B)
+					FoundedPart2.Material = "Neon"
+					table.insert(NextTable,1,FoundedPart2)
+				end	
+			end
+
+			local Distance3 = (v.Position - v.Position + Vector3.new(-8,0,0)).magnitude
+			local CFrame3 = CFrame.new(v.Position,v.Position + Vector3.new(-8,0,0))
+			local RayDirection3 = CFrame3.LookVector 
+			local Ray3 = Ray.new(v.Position, RayDirection3 * Distance3)
+			local FoundedPart3 = workspace:FindPartOnRayWithWhitelist(Ray3,WhiteList) 
+			if FoundedPart3 and FoundedPart3 ~= v and not FoundedPart3:GetAttribute("Segment") then
+				local FoundedPart3Check = workspace:FindPartOnRay(Ray3) 
+				if FoundedPart3Check == FoundedPart3 then
+					FoundedPart3:SetAttribute("Segment",Segment)
+					FoundedPart3.Color = Color3.fromRGB(R,G,B)
+					FoundedPart3.Material = "Neon"
+					table.insert(NextTable,1,FoundedPart3)
+				end	
+			end
+
+			local Distance4 = (v.Position - v.Position + Vector3.new(0,0,-8)).magnitude
+			local CFrame4 = CFrame.new(v.Position,v.Position + Vector3.new(0,0,-8))
+			local RayDirection4 = CFrame4.LookVector 
+			local Ray4 = Ray.new(v.Position, RayDirection4 * Distance4)
+			local FoundedPart4 = workspace:FindPartOnRayWithWhitelist(Ray4,WhiteList) 
+			if FoundedPart4 and FoundedPart4 ~= v and not FoundedPart4:GetAttribute("Segment") then
+				local FoundedPart4Check = workspace:FindPartOnRay(Ray4) 
+				if FoundedPart4Check == FoundedPart4 then
+					FoundedPart4:SetAttribute("Segment",Segment)
+					FoundedPart4.Color = Color3.fromRGB(R,G,B)
+					FoundedPart4.Material = "Neon"
+					table.insert(NextTable,1,FoundedPart4)
+				end	
+			end
+
+		end
+		if B ~= 0 and G == 0 and R == 254 then
+			CreateSegment(Segment+1,NextTable,R,G,B-2)
+		elseif B == 254 then
+			CreateSegment(Segment+1,NextTable,R+2,G-2,B)
+		elseif G == 254 then
+			CreateSegment(Segment+1,NextTable,R-2,G,B+2)
+		elseif R == 254 and B == 0 then
+			CreateSegment(Segment+1,NextTable,R,G+2,B)
+		end
+		
+	end
+	
+end
+
+local Table = {}
+NearPart_1:SetAttribute("Segment",0)
+table.insert(Table,1,NearPart_1)
+CreateSegment(1,Table,254,0,0)
+
+--while wait(0.1) do
+--	if FirstTime == true then
+--		FirstTime = false
+--		local Table = {NearPart_1}
+--		CreateSegment(1,Table)
+--	end
+--end
