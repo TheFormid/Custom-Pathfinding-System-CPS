@@ -1,0 +1,15 @@
+local Tables = {}
+
+Tables.ValueCheck = function(table1,value)
+	
+	for i, v in pairs(table1) do
+		if v == value then
+			return false                     --may cause a problem false/nil
+		end
+	end
+	
+	return true
+	
+end
+
+return Tables

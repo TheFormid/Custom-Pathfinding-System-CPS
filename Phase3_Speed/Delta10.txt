@@ -1,0 +1,35 @@
+local pointer = require(game.ReplicatedStorage.DPathfindingUltra.Pointer)
+local finder = require(game.ReplicatedStorage.DPathfindingUltra.UltimatePF4)
+
+wait()
+
+
+local StartPos = game.Workspace.Hi.Position
+local EndPos = game.Workspace.Ho.Position
+
+--Settings
+
+local PointDistance = 4
+local SecurityDistance = 4.5
+local SegmentRange = 40
+
+local WaitTime = 0.1
+local DestroyTime = 0.3
+
+--local b = pointer.Controller(SegmentRange,StartPos,EndPos,PointDistance,SecurityDistance) wait(0.1)
+--local a = pointer.CreateParts(b,Color3.fromRGB(255,0,0),Vector3.new(0.9,0.9,0.9),"Neon")
+local c,z = finder.Controller(StartPos,EndPos,PointDistance)-- print(c[1]) wait(0.1)
+--local d = finder.SegmentSorter(c[1],c[2],c[3]) wait(0.1)
+local e = finder.path_parts(c,WaitTime,DestroyTime)
+local f = finder.system_controller(z,0.01,0)
+
+local Path = function()
+	
+	local c = finder.Controller(game.Workspace.Hi.Position,game.Workspace.Ho.Position,PointDistance) -- print(c[1]) wait(0.1)
+	local e = finder.path_parts(c,WaitTime,DestroyTime)
+	
+end
+
+
+--while wait(0.6) do Path() end
+	

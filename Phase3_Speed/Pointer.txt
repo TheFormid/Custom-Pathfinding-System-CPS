@@ -1,0 +1,140 @@
+local Rays = require(script.Parent.Ray)
+local Tables = require(script.Parent.UnEqual)
+local Points = {}
+
+Points.CreatePoints = function(Px,Py,Pz,UltraCheck:BoolValue,Segment,AllPoints,PointRange,SecurityRange)  --Big N Problem
+	
+	local a = PointRange or 1
+	local b = SecurityRange or 2
+	
+	local FirstPoint = Vector3.new(Px,Py,Pz)
+	
+	local Ray1 = Rays.Do(FirstPoint,FirstPoint + Vector3.new(b,0,0),nil,nil,nil) 	
+	local Ray2 = Rays.Do(FirstPoint,FirstPoint + Vector3.new(0,0,b),nil,nil,nil) 
+	local Ray3 = Rays.Do(FirstPoint,FirstPoint + Vector3.new(-b,0,0),nil,nil,nil) 
+	local Ray4 = Rays.Do(FirstPoint,FirstPoint + Vector3.new(0,0,-b),nil,nil,nil) 
+	
+	local NewPoints = {}
+	
+	if UltraCheck == true then
+		if Ray1.Part == nil then --And Problem, same position
+			local NewPosition = FirstPoint + Vector3.new(a,0,0)
+			local Raya = Rays.Do(NewPosition,NewPosition + Vector3.new(a,0,0),nil,nil,nil)
+			local Rayb = Rays.Do(NewPosition,NewPosition + Vector3.new(0,a,0),nil,nil,nil)
+			local Rayc = Rays.Do(NewPosition,NewPosition + Vector3.new(0,0,a),nil,nil,nil)
+			local Rayd = Rays.Do(NewPosition,NewPosition + Vector3.new(-a,0,0),nil,nil,nil)
+			local Raye = Rays.Do(NewPosition,NewPosition + Vector3.new(0,-a,0),nil,nil,nil)
+			local Rayf = Rays.Do(NewPosition,NewPosition + Vector3.new(0,0,-a),nil,nil,nil)
+			if Tables.ValueCheck(AllPoints,NewPosition) and Raya.Part == nil and Rayb.Part == nil and Rayc.Part == nil and Rayd.Part == nil and Raye.Part == nil and Rayf.Part == nil then
+				table.insert(NewPoints,1,FirstPoint+Vector3.new(a,0,0))
+			end
+		end
+		if Ray2.Part == nil then --And Problem, same position
+			local NewPosition = FirstPoint + Vector3.new(0,0,a)
+			local Raya = Rays.Do(NewPosition,NewPosition + Vector3.new(a,0,0),nil,nil,nil)
+			local Rayb = Rays.Do(NewPosition,NewPosition + Vector3.new(0,a,0),nil,nil,nil)
+			local Rayc = Rays.Do(NewPosition,NewPosition + Vector3.new(0,0,a),nil,nil,nil)
+			local Rayd = Rays.Do(NewPosition,NewPosition + Vector3.new(-a,0,0),nil,nil,nil)
+			local Raye = Rays.Do(NewPosition,NewPosition + Vector3.new(0,-a,0),nil,nil,nil)
+			local Rayf = Rays.Do(NewPosition,NewPosition + Vector3.new(0,0,-a),nil,nil,nil)
+			if Tables.ValueCheck(AllPoints,NewPosition) and Raya.Part == nil and Rayb.Part == nil and Rayc.Part == nil and Rayd.Part == nil and Raye.Part == nil and Rayf.Part == nil then
+				table.insert(NewPoints,1,FirstPoint+Vector3.new(0,0,a))
+			end
+		end
+		if Ray3.Part == nil then --And Problem, same position
+			local NewPosition = FirstPoint + Vector3.new(-a,0,0)
+			local Raya = Rays.Do(NewPosition,NewPosition + Vector3.new(a,0,0),nil,nil,nil)
+			local Rayb = Rays.Do(NewPosition,NewPosition + Vector3.new(0,a,0),nil,nil,nil)
+			local Rayc = Rays.Do(NewPosition,NewPosition + Vector3.new(0,0,a),nil,nil,nil)
+			local Rayd = Rays.Do(NewPosition,NewPosition + Vector3.new(-a,0,0),nil,nil,nil)
+			local Raye = Rays.Do(NewPosition,NewPosition + Vector3.new(0,-a,0),nil,nil,nil)
+			local Rayf = Rays.Do(NewPosition,NewPosition + Vector3.new(0,0,-a),nil,nil,nil)
+			if Tables.ValueCheck(AllPoints,NewPosition) and Raya.Part == nil and Rayb.Part == nil and Rayc.Part == nil and Rayd.Part == nil and Raye.Part == nil and Rayf.Part == nil then
+				table.insert(NewPoints,1,FirstPoint+Vector3.new(-a,0,0))
+			end
+		end
+		if Ray4.Part == nil then --And Problem, same position
+			local NewPosition = FirstPoint + Vector3.new(0,0,-a)
+			local Raya = Rays.Do(NewPosition,NewPosition + Vector3.new(a,0,0),nil,nil,nil)
+			local Rayb = Rays.Do(NewPosition,NewPosition + Vector3.new(0,a,0),nil,nil,nil)
+			local Rayc = Rays.Do(NewPosition,NewPosition + Vector3.new(0,0,a),nil,nil,nil)
+			local Rayd = Rays.Do(NewPosition,NewPosition + Vector3.new(-a,0,0),nil,nil,nil)
+			local Raye = Rays.Do(NewPosition,NewPosition + Vector3.new(0,-a,0),nil,nil,nil)
+			local Rayf = Rays.Do(NewPosition,NewPosition + Vector3.new(0,0,-a),nil,nil,nil)
+			if Tables.ValueCheck(AllPoints,NewPosition) and Raya.Part == nil and Rayb.Part == nil and Rayc.Part == nil and Rayd.Part == nil and Raye.Part == nil and Rayf.Part == nil then
+				table.insert(NewPoints,1,FirstPoint+Vector3.new(0,0,-a))
+			end
+		end
+		
+		return NewPoints
+		
+	end
+	
+	if Tables.ValueCheck(AllPoints,FirstPoint+Vector3.new(a,0,0)) and not Ray1.Part then
+		table.insert(NewPoints,1,FirstPoint+Vector3.new(a,0,0))
+	end
+	if Tables.ValueCheck(AllPoints,FirstPoint+Vector3.new(0,0,a)) and not Ray2.Part then
+		
+		table.insert(NewPoints,1,FirstPoint+Vector3.new(0,0,a))
+	end
+	if Tables.ValueCheck(AllPoints,FirstPoint+Vector3.new(-a,0,0)) and not Ray3.Part then
+		table.insert(NewPoints,1,FirstPoint+Vector3.new(-a,0,0))
+	end
+	if Tables.ValueCheck(AllPoints,FirstPoint+Vector3.new(0,0,-a)) and not Ray4.Part then
+		table.insert(NewPoints,1,FirstPoint+Vector3.new(0,0,-a))
+	end
+	
+	return NewPoints
+	
+end
+
+Points.Segmenter = function(NewPoints,AllPoints,PointRange,SecurityRange)
+	
+	local Segment = {} 
+	
+	for i , v in pairs(NewPoints) do
+		local Creations = Points.CreatePoints(v.X,v.Y,v.Z,false,NewPoints,AllPoints,PointRange,SecurityRange)
+		for _, s in pairs(Creations) do
+			table.insert(Segment,1,s)
+			table.insert(AllPoints,1,s)
+		end
+	end
+	
+	return Segment
+	
+end
+
+Points.Controller = function(SegmentRange,StartPos:Vector3,EndPos:Vector3,PointRange:number,SecurityRange:number)
+	
+	local AllPoints = {StartPos}
+	local CurrentSegment = {StartPos}
+	
+	for i = SegmentRange,1,-1 do
+		local NewPoints = Points.Segmenter(CurrentSegment,AllPoints,PointRange,SecurityRange)
+		CurrentSegment = NewPoints
+	end
+	
+	return AllPoints
+	
+end
+
+Points.CreateParts = function(PointTable,Color:Color3,Size:Vector3,Material)
+	
+	local Folder = Instance.new("Folder")
+	Folder.Name = "CreatePartFolder"
+	Folder.Parent = game.Workspace
+	
+	for i , v in pairs(PointTable) do
+		local Part = Instance.new("Part")
+		Part.Position = v
+		Part.Size = Size 
+		Part.Color = Color or Color3.fromRGB(255,255,255)
+		Part.Parent = Folder
+		Part.Anchored = true
+		Part.Material = Material or "SmoothPlastic"
+		wait(game:GetService("RunService").Heartbeat)
+	end
+	
+end
+
+return Points

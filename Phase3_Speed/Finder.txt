@@ -1,0 +1,204 @@
+local Rays = require(script.Parent.Ray)
+local Tables = require(script.Parent.UnEqual)
+local Points = {}
+
+Points.CreatePoints = function(Point,NewPoints,AllPoints,SegmentPoints,PointDistance)  --Big N Problem
+	
+	local CreatedPoints = {}
+	
+	local Point1 = Point + Vector3.new(PointDistance,0,0)
+	local Point2 = Point + Vector3.new(0,0,PointDistance)
+	local Point3 = Point + Vector3.new(-PointDistance,0,0)
+	local Point4 = Point + Vector3.new(0,0,-PointDistance)
+	
+	for i , v in pairs(AllPoints) do
+		if Point1 == v then
+			table.insert(CreatedPoints,1,Point1)
+			table.remove(AllPoints,i)
+		elseif Point2 == v then
+			table.insert(CreatedPoints,1,Point2)
+			table.remove(AllPoints,i)
+		elseif Point3 == v then
+			table.insert(CreatedPoints,1,Point3)
+			table.remove(AllPoints,i)
+		elseif Point4 == v then
+			table.insert(CreatedPoints,1,Point4)
+			table.remove(AllPoints,i)
+		end	
+	end
+	
+	return CreatedPoints
+	
+end
+
+Points.Segmenter = function(NewPoints,AllPoints,SegmentPoints,PointDistance,LastPoint)
+	
+	local Segment = {}
+	
+	for i , v in pairs(NewPoints) do
+		local Creations = Points.CreatePoints(v,NewPoints,AllPoints,SegmentPoints,PointDistance,LastPoint)
+		for _, s in pairs(Creations) do
+			table.insert(Segment,1,s)
+		end
+	end
+	
+	return Segment
+	
+end
+
+Points.PointFinder = function(Point:Vector3,AllPoints,range:number)  
+	
+	for i , v in pairs(AllPoints) do
+		if (v-Point).magnitude < range then
+			
+			return v
+			
+		end
+	end
+	
+	warn("This Path is Not Possible")
+	return false
+	
+end
+
+Points.PointChecker = function(Point:Vector3,Points)
+	
+	for i , v in pairs(Points) do
+		if v == Point then
+			return true
+		end
+	end
+	
+	return false
+	
+end
+
+Points.ClosestPoint = function(Point:Vector3,Points)
+	
+	local Closest = nil
+	
+	for i , v in pairs(Points) do
+		if Closest == nil then
+			Closest = v
+		elseif (v-Point).magnitude < (Closest-Point).magnitude then
+			Closest = v
+		end
+	end
+
+	return Closest
+	
+end
+
+
+Points.Shower = function(NewPoints,i)
+	
+	for s, v in pairs(NewPoints) do
+		print(v)
+		local BillBoradGui = game.Workspace.Hi.BillboardGui:Clone()
+		local Part = Instance.new("Part")
+		Part.Position = v
+		Part.Size = Vector3.new(.5,.5,.5)
+		Part.Color = Color3.fromRGB(255,2,2)
+		Part.Parent = game.Workspace
+		Part.Anchored = true
+		Part.Material ="SmoothPlastic"
+		
+		BillBoradGui.TextLabel.Text = s
+		BillBoradGui.Parent = Part
+		
+	end
+	
+end
+
+Points.SegmentSorter = function(SegmentPoints,StartPoint,LastPoint)
+	
+	local lenght = 0
+	local Path = {} print(SegmentPoints) 
+	for i , v in pairs(SegmentPoints) do print(i) lenght = i end 	print(lenght)
+	for i = lenght,1,-1 do 
+		local Closest = Points.ClosestPoint(LastPoint,SegmentPoints[i])
+		table.insert(Path,1,Closest)
+	end
+	
+	return Path
+	
+end
+
+Points.Controller = function(StartPosition:Vector3,EndPosition:Vector3,AllPoints,PointDistance)
+	
+	local FirstPoint = Points.PointFinder(StartPosition,AllPoints,PointDistance)
+	local LastPoint = Points.PointFinder(EndPosition,AllPoints,PointDistance)
+	
+	if not FirstPoint or not LastPoint then warn("This Path is Not Possible-1") return false end
+	
+	local SegmentPoints = {}
+	local CurrentSegment = {FirstPoint}
+	
+	for i = 1,1000,1 do
+		
+		local NewPoints = Points.Segmenter(CurrentSegment,AllPoints,SegmentPoints,PointDistance,LastPoint)
+		
+		if Points.PointChecker(LastPoint,NewPoints) then return {SegmentPoints,FirstPoint,LastPoint} end
+		
+		table.insert(SegmentPoints,i,NewPoints)
+		CurrentSegment = NewPoints
+		Points.Shower(NewPoints,i)
+		
+	end
+	
+	warn("This Path is Not Possible-2")
+	return SegmentPoints
+	
+end
+
+Points.CreateParts = function(SegmentPoints,Color:Color3,Size:Vector3,Material)
+	
+	local Folder = Instance.new("Folder")
+	Folder.Name = "CreatePartFolder"
+	Folder.Parent = game.Workspace
+	
+	local a = 255
+	print(SegmentPoints)
+	for i , v in pairs(SegmentPoints) do
+		a -= 5
+		for _ , s in pairs(v) do
+			
+			local Part = Instance.new("Part")
+			Part.Position = s
+			Part.Size = Size
+			Part.Color = Color3.fromRGB(255,a,a)
+			Part.Parent = Folder
+			Part.Anchored = true
+			Part.Material = Material or "SmoothPlastic"
+			wait(0.01)
+			
+		end
+	end
+	
+end
+
+Points.CreatePaths = function(Points)
+	
+	local Folder = Instance.new("Folder")
+	Folder.Name = "CreatePartFolder"
+	Folder.Parent = game.Workspace
+
+	print(Points)
+	for i , v in pairs(Points) do
+	
+
+		local Part = Instance.new("Part")
+		Part.Position = v
+		Part.Size = Vector3.new(1.2,1.2,1.2)
+		Part.Color = Color3.fromRGB(0,150,255)
+		Part.Parent = Folder
+		Part.Anchored = true
+		Part.Material = "Neon"
+		wait(0.1)
+
+	
+	end
+	
+end
+
+return Points

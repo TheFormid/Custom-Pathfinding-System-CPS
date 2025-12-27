@@ -1,0 +1,22 @@
+local Rays = {}
+
+Rays.Do = function(P1:Vector3,P2:Vector3,WhiteList,BlackList,Range)
+	
+	local CFramee = CFrame.new(P1,P2)
+	local Distance = Range or (P1-P2).Magnitude
+	local Direction = CFramee.LookVector
+	local Rayy = Ray.new(P1,Direction * Distance)
+	local Part = workspace:FindPartOnRayWithIgnoreList(Rayy,{game.Workspace.Hi,game.Workspace.Ho})
+	local LPart = nil
+	
+	if WhiteList then
+		LPart = workspace:FindPartOnRayWithWhitelist(Rayy,WhiteList)
+	elseif BlackList then
+		LPart = workspace:FindPartOnRayWithIgnoreList(Rayy,BlackList)
+	end
+	
+	return {["Part"]=Part,["LPart"]=LPart,["Ray"]=Rayy}
+	
+end
+
+return Rays
