@@ -1,0 +1,412 @@
+local Rays = require(script.Parent.Ray)
+local Tables = require(script.Parent.UnEqual)
+local Points = {}
+
+Points.part_creator = function(pos,anchored,brickcolor,size,rotate,parent,cancollide,material,destroytime)
+	
+	local newpart = Instance.new("Part")
+	newpart.Parent = parent or game.Workspace
+	newpart.Anchored = anchored or true
+	newpart.BrickColor = brickcolor or BrickColor.new("Electric blue")
+	newpart.Position = pos or Vector3.new(0,20,0)
+	newpart.Size = size or Vector3.new(3,3,3)
+	newpart.Rotation = rotate or Vector3.new(0,0,0)
+	newpart.CanCollide = cancollide or false
+	newpart.Material = material or "SmoothPlastic"
+	if destroytime then game:GetService("Debris"):AddItem(newpart,destroytime) end
+	
+end
+
+Points.closest_point = function (point_table,point1,point2) --For Two Points (if you want)
+	
+	local closest1 = nil
+	local closest2 = nil
+	
+	for i, v in pairs(point_table) do
+		if closest1 == nil then
+			closest1 = v
+		else
+			if (v-point1).magnitude < (closest1-point1).magnitude then
+				closest1 = v
+			end
+		end
+		if closest2 == nil then
+			closest2 = v
+		elseif point2 then
+			if (v-point2).magnitude < (closest2-point2).magnitude then
+				closest2 = v
+			end
+		end
+	end
+	
+	return closest1,closest2
+	
+end
+
+Points.seperator = function (big_table,lil_table)  --new segment removed from all points
+	
+	for i, v in pairs(big_table) do	
+		for _,s in pairs(lil_table) do
+			
+			if s == v then table.remove(big_table,i) end	
+			
+		end	
+	end
+	
+end
+
+Points.finder = function (point_table,point) -- Is Point inside the table?
+	
+	for i , v in pairs(point_table) do
+		if v == point then return false end
+	end
+	
+	return true
+	
+end
+
+Points.segment_creator = function (current_segment,new_banned_segment,point_distance)  --new segment created (vector-ray-table)-checked  !
+	
+	local new_segment = {}
+--	local new_banned_segment = {}
+	
+	for i, v in pairs(current_segment) do
+		
+		local pottential_point01,point01  = v + Vector3.new(0,0,point_distance), true
+		local pottential_point02,point02  = v + Vector3.new(0,0,-point_distance),true
+		local pottential_point03,point03  = v + Vector3.new(point_distance,0,0), true
+		local pottential_point04,point04  = v + Vector3.new(-point_distance,0,0),true
+		local pottential_point05,point05  = v + Vector3.new(-point_distance,0,point_distance), true
+		local pottential_point06,point06  = v + Vector3.new(point_distance,0,-point_distance),true
+		local pottential_point07,point07  = v + Vector3.new(point_distance,0,point_distance), true
+		local pottential_point08,point08  = v + Vector3.new(-point_distance,0,-point_distance),true
+		
+		local pottential_point09,point09  = v + Vector3.new(0,0,point_distance*2), true
+		local pottential_point10,point10  = v + Vector3.new(0,0,-point_distance*2),true
+		local pottential_point11,point11  = v + Vector3.new(point_distance*2,0,0), true
+		local pottential_point12,point12  = v + Vector3.new(-point_distance*2,0,0),true
+		local pottential_point13,point13  = v + Vector3.new(-point_distance*2,0,point_distance*2), true
+		local pottential_point14,point14  = v + Vector3.new(point_distance*2,0,-point_distance*2),true
+		local pottential_point15,point15  = v + Vector3.new(point_distance*2,0,point_distance*2), true
+		local pottential_point16,point16  = v + Vector3.new(-point_distance*2,0,-point_distance*2),true
+		
+		local pottential_point17,point17  = v + Vector3.new(-point_distance*3,0,point_distance*3), true
+		local pottential_point18,point18  = v + Vector3.new(point_distance*3,0,-point_distance*3),true
+		local pottential_point19,point19  = v + Vector3.new(point_distance*3,0,point_distance*3), true
+		local pottential_point20,point20  = v + Vector3.new(-point_distance*3,0,-point_distance*3),true
+		local pottential_point21,point21  = v + Vector3.new(-point_distance*3,0,point_distance*3), true
+		local pottential_point22,point22  = v + Vector3.new(point_distance*3,0,-point_distance*3),true
+		local pottential_point23,point23  = v + Vector3.new(point_distance*3,0,point_distance*3), true
+		local pottential_point24,point24  = v + Vector3.new(-point_distance*3,0,-point_distance*3),true
+		
+		
+		
+		for _, s in pairs(new_banned_segment) do --wait(game:GetService("RunService").Heartbeat) 
+		--	wait(0.01) print("uummm")
+			if s == pottential_point01 then point01 = false end
+			if s == pottential_point02 then point02 = false end
+			if s == pottential_point03 then point03 = false end
+			if s == pottential_point04 then point04 = false end
+			if s == pottential_point05 then point05 = false end
+			if s == pottential_point06 then point06 = false end
+			if s == pottential_point07 then point07 = false end
+			if s == pottential_point08 then point08 = false end
+			if s == pottential_point09 then point09 = false end
+			if s == pottential_point10 then point10 = false end
+			if s == pottential_point11 then point11 = false end
+			if s == pottential_point12 then point12 = false end
+			if s == pottential_point13 then point13 = false end
+			if s == pottential_point14 then point14 = false end
+			if s == pottential_point15 then point15 = false end
+			if s == pottential_point16 then point16 = false end
+			if s == pottential_point17 then point17 = false end
+			if s == pottential_point18 then point18 = false end
+			if s == pottential_point19 then point19 = false end
+			if s == pottential_point20 then point20 = false end
+			if s == pottential_point21 then point21 = false end
+			if s == pottential_point22 then point22 = false end
+			if s == pottential_point23 then point23 = false end
+			if s == pottential_point24 then point24 = false end
+
+		end --print(banned_segment)
+	
+		--Table Checked
+		
+		for _, s in pairs(new_segment) do --wait(game:GetService("RunService").Heartbeat)
+			if s == pottential_point01 then point01 = false end
+			if s == pottential_point02 then point02 = false end
+			if s == pottential_point03 then point03 = false end
+			if s == pottential_point04 then point04 = false end
+			if s == pottential_point05 then point05 = false end
+			if s == pottential_point06 then point06 = false end
+			if s == pottential_point07 then point07 = false end
+			if s == pottential_point08 then point08 = false end
+			if s == pottential_point09 then point09 = false end
+			if s == pottential_point10 then point10 = false end
+			if s == pottential_point11 then point11 = false end
+			if s == pottential_point12 then point12 = false end
+			if s == pottential_point13 then point13 = false end
+			if s == pottential_point14 then point14 = false end
+			if s == pottential_point15 then point15 = false end
+			if s == pottential_point16 then point16 = false end
+			if s == pottential_point17 then point17 = false end
+			if s == pottential_point18 then point18 = false end
+			if s == pottential_point19 then point19 = false end
+			if s == pottential_point20 then point20 = false end
+			if s == pottential_point21 then point21 = false end
+			if s == pottential_point22 then point22 = false end
+			if s == pottential_point23 then point23 = false end
+			if s == pottential_point24 then point24 = false end
+		end
+		
+		--Vector Checked
+		
+		local Ray1 = Rays.Do(v,pottential_point01,nil,nil,nil) if Ray1.Part then point01 = false end
+		local Ray2 = Rays.Do(v,pottential_point02,nil,nil,nil) if Ray2.Part then point02 = false end
+		local Ray3 = Rays.Do(v,pottential_point03,nil,nil,nil) if Ray3.Part then point03 = false end
+		local Ray4 = Rays.Do(v,pottential_point04,nil,nil,nil) if Ray4.Part then point04 = false end
+		local Ray5 = Rays.Do(v,pottential_point05,nil,nil,nil) if Ray5.Part then point05 = false end
+		local Ray6 = Rays.Do(v,pottential_point06,nil,nil,nil) if Ray6.Part then point06 = false end
+		local Ray7 = Rays.Do(v,pottential_point07,nil,nil,nil) if Ray7.Part then point07 = false end
+		local Ray8 = Rays.Do(v,pottential_point08,nil,nil,nil) if Ray8.Part then point08 = false end
+		local Ray9 = Rays.Do(v,pottential_point09,nil,nil,nil) if Ray9.Part then point09 = false end
+		local Ray10 = Rays.Do(v,pottential_point10,nil,nil,nil) if Ray10.Part then point10 = false end
+		local Ray11 = Rays.Do(v,pottential_point11,nil,nil,nil) if Ray11.Part then point11 = false end
+		local Ray12 = Rays.Do(v,pottential_point12,nil,nil,nil) if Ray12.Part then point12 = false end
+		local Ray13 = Rays.Do(v,pottential_point13,nil,nil,nil) if Ray13.Part then point13 = false end
+		local Ray14 = Rays.Do(v,pottential_point14,nil,nil,nil) if Ray14.Part then point14 = false end
+		local Ray15 = Rays.Do(v,pottential_point15,nil,nil,nil) if Ray15.Part then point15 = false end
+		local Ray16 = Rays.Do(v,pottential_point16,nil,nil,nil) if Ray16.Part then point16 = false end
+		local Ray17 = Rays.Do(v,pottential_point17,nil,nil,nil) if Ray17.Part then point17 = false end
+		local Ray18 = Rays.Do(v,pottential_point18,nil,nil,nil) if Ray18.Part then point18 = false end
+		local Ray19 = Rays.Do(v,pottential_point19,nil,nil,nil) if Ray19.Part then point19 = false end
+		local Ray20 = Rays.Do(v,pottential_point20,nil,nil,nil) if Ray20.Part then point20 = false end
+		local Ray21 = Rays.Do(v,pottential_point21,nil,nil,nil) if Ray21.Part then point21 = false end
+		local Ray22 = Rays.Do(v,pottential_point22,nil,nil,nil) if Ray22.Part then point22 = false end
+		local Ray23 = Rays.Do(v,pottential_point23,nil,nil,nil) if Ray23.Part then point23 = false end
+		local Ray24 = Rays.Do(v,pottential_point24,nil,nil,nil) if Ray24.Part then point24 = false end
+		
+		--Ray Checked
+		
+		if point01 == true and point09 == true and point17 == true then table.insert(new_segment,i,pottential_point17) table.insert(new_banned_segment,i,pottential_point01) table.insert(new_banned_segment,i,pottential_point09)
+		elseif point01 == true and point09 == true then table.insert(new_segment,i,pottential_point09) table.insert(new_banned_segment,i,pottential_point01)
+		elseif point01 == true then table.insert(new_segment,i,pottential_point01) end
+		
+		if point02 == true and point10 == true and point18 == true then table.insert(new_segment,i,pottential_point18) 	table.insert(new_banned_segment,i,pottential_point02) table.insert(new_banned_segment,i,pottential_point10)
+		elseif point02 == true and point10 == true then table.insert(new_segment,i,pottential_point10) table.insert(new_banned_segment,i,pottential_point02)
+		elseif point02 == true then table.insert(new_segment,i,pottential_point02) end
+		
+		if point03 == true and point11 == true and point19 == true then table.insert(new_segment,i,pottential_point19) table.insert(new_banned_segment,i,pottential_point03) table.insert(new_banned_segment,i,pottential_point11)
+		elseif point03 == true and point11 == true then table.insert(new_segment,i,pottential_point11) table.insert(new_banned_segment,i,pottential_point03)
+		elseif point03 == true then table.insert(new_segment,i,pottential_point03) end
+		
+		if point04 == true and point12 == true and point20 == true then table.insert(new_segment,i,pottential_point20) table.insert(new_banned_segment,i,pottential_point04) table.insert(new_banned_segment,i,pottential_point12)
+		elseif point04 == true and point12 == true then table.insert(new_segment,i,pottential_point12) table.insert(new_banned_segment,i,pottential_point04)
+		elseif point04 == true then table.insert(new_segment,i,pottential_point04) end
+		
+		if point05 == true and point13 == true and point21 == true then table.insert(new_segment,i,pottential_point21) table.insert(new_banned_segment,i,pottential_point05) table.insert(new_banned_segment,i,pottential_point13)
+		elseif point05 == true and point13 == true then table.insert(new_segment,i,pottential_point13) table.insert(new_banned_segment,i,pottential_point05)
+		elseif point05 == true then table.insert(new_segment,i,pottential_point05) end
+		
+		if point06 == true and point14 == true and point22 == true then table.insert(new_segment,i,pottential_point22) table.insert(new_banned_segment,i,pottential_point06) table.insert(new_banned_segment,i,pottential_point14)
+		elseif point06 == true and point14 == true then table.insert(new_segment,i,pottential_point14) table.insert(new_banned_segment,i,pottential_point06)
+		elseif point06 == true then table.insert(new_segment,i,pottential_point06) end
+		
+		if point07 == true and point15 == true and point23 == true then table.insert(new_segment,i,pottential_point23) table.insert(new_banned_segment,i,pottential_point07) table.insert(new_banned_segment,i,pottential_point15)
+		elseif point07 == true and point15 == true then table.insert(new_segment,i,pottential_point15) table.insert(new_banned_segment,i,pottential_point07)
+		elseif point07 == true then table.insert(new_segment,i,pottential_point07) end
+		
+		if point08 == true and point16 == true and point24 == true then table.insert(new_segment,i,pottential_point24) table.insert(new_banned_segment,i,pottential_point08) table.insert(new_banned_segment,i,pottential_point16)
+		elseif point08 == true and point16 == true then table.insert(new_segment,i,pottential_point16) table.insert(new_banned_segment,i,pottential_point08)
+		elseif point08 == true then table.insert(new_segment,i,pottential_point08)end
+		 
+		
+--table.insert(new_banned_segment,i,pottential_point21)
+--table.insert(new_banned_segment,i,pottential_point22)
+--table.insert(new_banned_segment,i,pottential_point23)
+--	table.insert(new_banned_segment,i,pottential_point24)
+
+		
+		
+
+
+
+
+		
+
+		
+		
+	
+	--	table.insert(new_banned_segment,i,pottential_point17)
+	--	table.insert(new_banned_segment,i,pottential_point18)
+	--	table.insert(new_banned_segment,i,pottential_point19)
+	--	table.insert(new_banned_segment,i,pottential_point20)
+		
+		table.insert(new_banned_segment,i,pottential_point01)table.insert(new_banned_segment,i,pottential_point21)
+		table.insert(new_banned_segment,i,pottential_point02)table.insert(new_banned_segment,i,pottential_point22)
+		table.insert(new_banned_segment,i,pottential_point03)table.insert(new_banned_segment,i,pottential_point23)
+		table.insert(new_banned_segment,i,pottential_point04)table.insert(new_banned_segment,i,pottential_point24)
+		table.insert(new_banned_segment,i,pottential_point05)
+		table.insert(new_banned_segment,i,pottential_point06)
+		table.insert(new_banned_segment,i,pottential_point07)
+		table.insert(new_banned_segment,i,pottential_point08)
+		table.insert(new_banned_segment,i,pottential_point09)
+		table.insert(new_banned_segment,i,pottential_point10)
+		table.insert(new_banned_segment,i,pottential_point11)
+		table.insert(new_banned_segment,i,pottential_point12)
+		table.insert(new_banned_segment,i,pottential_point13)
+		table.insert(new_banned_segment,i,pottential_point14)
+		table.insert(new_banned_segment,i,pottential_point15)
+		table.insert(new_banned_segment,i,pottential_point16)
+		table.insert(new_banned_segment,i,pottential_point17)
+		table.insert(new_banned_segment,i,pottential_point18)
+		table.insert(new_banned_segment,i,pottential_point19)
+		table.insert(new_banned_segment,i,pottential_point20)
+	
+		
+	end
+	
+	--banned_segment = new_banned_segment
+	
+	return new_segment,new_banned_segment
+	
+	--Vector Check
+	
+	--Ray Check
+	
+	--Table Check	
+	
+end
+
+Points.segment_controller = function (new_segment,last_point,point_distance)  --checked for last point in newsegment
+	
+	for i , v in pairs(new_segment) do if (v-last_point).magnitude < point_distance then return true end end	
+	
+	return false
+	
+end
+
+Points.path_sorter = function (path)
+	
+	local new_path = {}
+	
+	for i, v in pairs(path) do
+		table.insert(new_path,1,v)
+	end
+	
+	return new_path
+	
+end
+
+Points.path_creator = function (segments,last_point,start_point)  --paths created from segments !
+	
+	local path = {}
+	local sorted_segment = {}
+	
+	for i, v in pairs(segments) do
+		table.insert(sorted_segment,1,v)
+	end
+	
+	local closestpoint = last_point
+	table.insert(path,1,closestpoint)
+	
+	for i,v in pairs(sorted_segment) do
+		
+		local new_closestpoint,_ = Points.closest_point(v,closestpoint)
+		table.insert(path,i+1,new_closestpoint)
+		closestpoint = new_closestpoint
+		
+	end
+	
+--	print(#path)
+	
+	table.insert(path,(#path)+1,start_point)
+	
+	return path
+	
+end
+
+Points.Controller = function(start_position,end_position,point_distance)
+	
+	
+	local range = (start_position-end_position).magnitude if range>250 then warn("Too Far") return end
+	
+	local path = nil
+	local control_distance = 40
+	
+	local first_point = start_position
+	local last_point = end_position
+--	first_point,last_point = Points.closest_point(clone_all_points,start_position,end_position)  
+
+	
+	
+	
+	local segments = {}
+	local current_segment = {first_point}  
+	local new_banned_segment = {}
+	local old_s1 = {}
+	local old_s2 = {}
+	local old_s3 = {}
+	local old_s4 = {}
+	local old_s5 = {}
+--	Points.seperator(clone_all_points,current_segment)
+	
+	
+	
+	for i = 1,control_distance,1 do
+		
+		local new_segment,banned_seg = Points.segment_creator(current_segment,new_banned_segment,point_distance)
+		local is_over = Points.segment_controller(new_segment,last_point,point_distance)
+		
+		--banned_segment = banned_seg
+		
+		if is_over == true then
+			path = Points.path_creator(segments,last_point,first_point)
+			path = Points.path_sorter(path)
+			return path,segments
+		else
+			table.insert(segments,i,new_segment)
+			old_s5 = old_s4
+			old_s4 = old_s3
+			old_s3 = old_s2
+			old_s2 = old_s1
+			old_s1 = current_segment
+			current_segment = new_segment
+		--	Points.seperator(clone_all_points,new_segment)
+		end
+		
+	end
+
+	warn("Out of range!")
+	return path,segments
+
+end
+
+Points.path_parts = function(path,wait_time,destroy_time)
+	
+	if not path then warn("There is no path") return end
+	
+	for i , v in pairs(path) do
+		
+		Points.part_creator(v,true,nil,Vector3.new(1,1,1),nil,nil,nil,"Neon",destroy_time)
+		if wait_time then wait(wait_time) end
+		
+	end
+	
+end
+
+Points.system_controller = function(point_table,wait_time,destroy_time)
+	
+	if not point_table then warn("There is no path") return end
+
+	for _,s in pairs(point_table) do
+		for i , v in pairs(s) do
+
+			Points.part_creator(v,true,BrickColor.new("Persimmon"),Vector3.new(2,2,2),nil,nil,nil,"Neon",nil)
+			if wait_time then wait(wait_time) end
+
+		end
+	end
+end
+
+return Points
