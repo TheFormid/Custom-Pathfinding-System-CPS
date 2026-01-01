@@ -36,7 +36,7 @@ What followed was a deep dive into Computer Science fundamentals, evolving throu
 <div align="center">
   <img src="Assets/HeatMap.png" width="30%" alt="Heatmap Visualization" />
   <img src="Assets/MazeGrid.png" width="30%" alt="Grid System" />
-  <img src="Assets/Maze.png" width="30%" alt="Path" />
+  <img src="Assets/Maze" width="30%" alt="Path" />
   <p><em>Left: RGB Heatmap Propagation |Middle: Node Scanning System</em></p> | Right: Blue Path System</em></p>
 </div>
 <br>
