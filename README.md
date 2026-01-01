@@ -34,10 +34,10 @@ What followed was a deep dive into Computer Science fundamentals, evolving throu
 ## 🔬 Phase 2: Visualizing the Logic (v4.0 - v6.0)
 
 <div align="center">
-  <img src="Assets/HeatMap.png" width="30%" alt="Heatmap Visualization" />
   <img src="Assets/MazeGrid.png" width="30%" alt="Grid System" />
+  <img src="Assets/HeatMap.png" width="30%" alt="Heatmap Visualization" />
   <img src="Assets/Maze" width="30%" alt="Path" />
-  <p><em>Left: RGB Heatmap Propagation |Middle: Node Scanning System</em></p> | Right: Blue Path System</em></p>
+  <p><em> Left: Node Scanning System |Middle: RGB Heatmap Propagation | Right: Blue Path System</em></p>
 </div>
 <br>
 
